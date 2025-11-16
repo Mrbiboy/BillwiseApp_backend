@@ -1,0 +1,24 @@
+fastapi
+uvicorn
+python-dotenv
+pydantic==2.*
+SQLAlchemy
+alembic
+psycopg2-binary
+redis
+pydantic-settings
+requests
+loguru
+# fastapi → API
+
+# uvicorn → ASGI server
+
+# pydantic v2 → schemas
+
+# SQLAlchemy + alembic → DB + migrations
+
+# psycopg2-binary → PostgreSQL driver
+
+# redis → caching / Celery
+
+# loguru → beautiful logging
