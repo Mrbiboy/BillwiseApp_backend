@@ -1,0 +1,22 @@
+_format_version: "3.0"
+
+services:
+  - name: sms-parser
+    url: http://sms-parser-service:8004
+    routes:
+      - name: sms-parser-route
+        paths:
+          - /sms
+        methods:
+          - POST
+        strip_path: false
+
+plugins:
+  - name: cors
+    config:
+      origins: ["*"]
+      methods: ["GET", "POST", "OPTIONS"]
+      headers: ["*"]
+      exposed_headers: ["*"]
+      credentials: true
+      max_age: 3600
