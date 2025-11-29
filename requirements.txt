@@ -11,6 +11,10 @@ requests
 loguru
 spacy
 huggingface_hub
+tensorflow
+keras
+numpy
+scikit-learn==1.6.1
 # fastapi → API
 
 # uvicorn → ASGI server
