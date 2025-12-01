@@ -18,6 +18,9 @@ app = FastAPI(title="SMS Parser Service", version="1.0.0")
 # Initialize your NLP parser
 sms_parser = SMSParser()
 
+
+# curl -X POST "http://localhost:8004/parse-sms" -H "Content-Type: application/json; charset=utf-8" -d "{\"user_id\":\"123e4567-e89b-12d3-a456-426614174000\",\"account_id\":\"123e4567-e89b-12d3-a456-426614174001\",\"sms_text\":\"Votre facture Inwi Fibre numero 1234567890 de Mars 2025 de 450.00dh payable avant 12/03/2025 est disponible sur bit.inwi.ma/Facture\"}"
+# {"success":true,"message":"SMS processed and saved successfully","parsed_data":{"provider":"Inwi","service":null,"account":"1234567890","bill_month":"Mars 2025","amount":"450.00dh","due_date":null,"url":"bit.inwi.ma/Facture","raw_text":"Votre facture Inwi Fibre numero 1234567890 de Mars 2025 de 450.00dh payable avant 12/03/2025 est disponible sur bit.inwi.ma/Facture"},"transaction_id":"e54fd218-540b-4bc8-948b-cfe123318887","bill_id":"173c203d-335f-4b1a-81f4-ddbb5888f11c"}
 # Request/Response models
 class SMSRequest(BaseModel):
     user_id: str
