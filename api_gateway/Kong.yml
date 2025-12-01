@@ -10,6 +10,19 @@ services:
         methods:
           - POST
         strip_path: false
+services:
+  - name: financial-health
+    url: http://financial-health-service:8002
+    routes:
+      - name: financial-health-route
+        paths:
+          - /financial-health
+        methods:
+          - GET
+          - POST
+          - OPTIONS
+        strip_path: false
+
 
 plugins:
   - name: cors
