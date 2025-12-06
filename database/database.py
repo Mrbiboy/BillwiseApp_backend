@@ -9,12 +9,14 @@ from typing import Generator
 import os
 
 # Database URL from environment variables
-DATABASE_URL = os.getenv(
-    "DATABASE_URL")
+DATABASE_URL="postgresql://avnadmin:AVNS_wAl_C8tHEBkCA4cIWbO@pg-3197ed6b-uca-f390.g.aivencloud.com:12654/defaultdb?sslmode=require"
 
 # Fix for Heroku/some providers that use 'postgres://' instead of 'postgresql://'
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+
+print("database.py: URl: ",DATABASE_URL)
 
 # Create SQLAlchemy engine with UTF-8 encoding support
 engine = create_engine(
