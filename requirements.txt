@@ -24,15 +24,16 @@ pymongo==4.6.0
 joblib==1.3.2   
 motor
 stripe
-
-fastapi
-uvicorn[standard]
 yfinance
-pandas
-numpy
-scikit-learn
-joblib
-pydantic
+argon2_cffi
+python-jose[cryptography]
+passlib
+pydantic[email]  
+
+
+
+
+
 # fastapi → API
 
 # uvicorn → ASGI server
