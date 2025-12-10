@@ -1,0 +1,11 @@
+[MASTER]
+ignore-patterns=test_.*?py
+max-line-length=100
+disable=
+    C0111,
+    R0913,
+    W0212,
+    C0103
+
+[DESIGN]
+max-attributes=10
