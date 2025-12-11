@@ -2,7 +2,7 @@ _format_version: "3.0"
 
 services:
   - name: sms-parser
-    url: http://sms-parser-service:8004
+    url: http://sms-parser-service:8001
     routes:
       - name: sms-parser-route
         paths:
@@ -10,7 +10,6 @@ services:
         methods:
           - POST
         strip_path: false
-services:
   - name: financial-health
     url: http://financial-health-service:8002
     routes:
