@@ -10,7 +10,7 @@ class CashFlowPredictor:
                 'expenses_to_income', 'savings_to_income'
             ]
         }
-        print("✅ Using rule-based predictor (No XGBoost dependencies)")
+        print("Using rule-based predictor (No XGBoost dependencies)")
     
     def preprocess_features(self, input_data: dict) -> pd.DataFrame:
         """Preprocess input features"""
@@ -76,16 +76,23 @@ class CashFlowPredictor:
                 cashflow_risk = 0
                 risk_prob = 0.000009
             
+            predicted_income = input_data["monthly_income_usd"]
+            predicted_expenses = input_data["monthly_expenses_usd"]
+            predicted_balance = net_cashflow
+
             return {
                 'net_cashflow': float(net_cashflow),
                 'cashflow_risk': cashflow_risk,
                 'risk_probability': risk_prob,
                 'risk_level': 'high' if cashflow_risk == 1 else 'low',
+                'predicted_income': predicted_income,
+                'predicted_expenses': predicted_expenses,
+                'predicted_balance': predicted_balance,
                 'status': 'success'
             }
             
         except Exception as e:
-            print(f"❌ Prediction error: {str(e)}")
+            print(f"Prediction error: {str(e)}")
             # Fallback to reasonable values
             income = input_data.get('monthly_income_usd', 0)
             expenses = input_data.get('monthly_expenses_usd', 0)
@@ -99,5 +106,8 @@ class CashFlowPredictor:
                 'cashflow_risk': cashflow_risk,
                 'risk_probability': 0.8 if cashflow_risk == 1 else 0.2,
                 'risk_level': 'high' if cashflow_risk == 1 else 'low',
+                'predicted_income': income,
+                'predicted_expenses': expenses,
+                'predicted_balance': net_cashflow,
                 'status': 'success'
             }
