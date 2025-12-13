@@ -63,10 +63,10 @@ async def confirm_recommendation(request: RecommendationRequest, db: Session = D
         db_rec = Recommendation(
             user_id=request.user_id,
             amount_eur=request.amount_eur,
-            portfolio=result["allocations"],                    # JSON list of dicts
+            portfolio=result["allocations"],                    
             expected_2y_return=result["expected_2y_return"],
             strategy=result["strategy"],
-            recommendation_date=datetime.utcnow()               # Explicitly set (or rely on default)
+            recommendation_date=datetime.utcnow()               
         )
         db.add(db_rec)
         db.commit()
