@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from fastapi import FastAPI, Depends, HTTPException
-from fastapi.middleware.cors import CORSMiddleware  # ← ADD THIS IMPORT
+from fastapi.middleware.cors import CORSMiddleware  
 from sqlalchemy.orm import Session
 from database.database import get_db
 from models import Recommendation
@@ -93,11 +93,6 @@ async def confirm_recommendation(request: RecommendationRequest, db: Session = D
     except Exception as e:
         db.rollback()  # Important: rollback on error
         raise HTTPException(status_code=500, detail=f"Confirmation failed: {str(e)}")
-
-
-@app.get("/")
-def home():
-    return {"message": "ETF Advisor API ready – Use /preview or /confirm"}
 
 
 # Optional: View user's investment history
