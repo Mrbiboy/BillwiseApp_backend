@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from typing import Generator
 import os
+from datetime import datetime
 
 # Database URL from environment variables
 DATABASE_URL="postgresql://avnadmin:AVNS_wAl_C8tHEBkCA4cIWbO@pg-3197ed6b-uca-f390.g.aivencloud.com:12654/defaultdb?sslmode=require"
@@ -51,3 +52,18 @@ def get_db() -> Generator[Session, None, None]:
         yield db
     finally:
         db.close()
+
+def save_prediction(db: Session, prediction_data: dict):
+    from services.cash_flow_forcast_service.models import CashFlowPredictionDB
+    record = CashFlowPredictionDB(
+        user_id=prediction_data['user_id'],
+        predicted_income=prediction_data['predicted_income'],
+        predicted_expenses=prediction_data['predicted_expenses'],
+        predicted_balance=prediction_data['predicted_balance'],
+        confidence=prediction_data['confidence'],
+        prediction_date=prediction_data["timestamp"]
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    return record
