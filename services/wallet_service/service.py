@@ -44,3 +44,4 @@ def deduct_balance(db: Session, user_id: UUID, amount: float, description="Payme
     db.commit()
     db.refresh(account)
     return account
+
