@@ -1,21 +1,29 @@
 import spacy
+from huggingface_hub import snapshot_download
 from pathlib import Path
-
-# Get the directory where this script is located
-SCRIPT_DIR = Path(__file__).resolve().parent
+import os
 
 class SMSParser:
+    _nlp = None  # cache model (singleton)
+
     def __init__(self, model_path: str = None):
-        if model_path is None:
-            model_path = SCRIPT_DIR / "models" / "model-best"
-        model_dir = Path(model_path)
-        if not model_dir.exists():
-            raise RuntimeError(f"spaCy model not found at: {model_path}")
-        # Load your trained NER model
-        self.nlp = spacy.load(str(model_path))
+        if SMSParser._nlp is None:
+            if model_path is None:
+                model_path = snapshot_download(
+                    repo_id="elam0222/sms-parser-spacy",
+                    revision="main",              # optional
+                    cache_dir="/tmp/hf_models"    # Railway-friendly
+                )
+
+            model_dir = Path(model_path)
+            if not model_dir.exists():
+                raise RuntimeError(f"spaCy model not found at: {model_dir}")
+
+            SMSParser._nlp = spacy.load(str(model_dir))
+
+        self.nlp = SMSParser._nlp
 
     def parse_entities(self, doc):
-        """Return entities as a dict with labels as keys"""
         entities = {}
         for ent in doc.ents:
             entities[ent.label_] = ent.text
