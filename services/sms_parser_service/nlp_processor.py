@@ -1,14 +1,18 @@
-# sms_parser_service/nlp_processor.py
 import spacy
 from pathlib import Path
 
+# Get the directory where this script is located
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 class SMSParser:
-    def __init__(self, model_path: str = "./models/model-best"):
+    def __init__(self, model_path: str = None):
+        if model_path is None:
+            model_path = SCRIPT_DIR / "models" / "model-best"
         model_dir = Path(model_path)
         if not model_dir.exists():
             raise RuntimeError(f"spaCy model not found at: {model_path}")
         # Load your trained NER model
-        self.nlp = spacy.load(model_path)
+        self.nlp = spacy.load(str(model_path))
 
     def parse_entities(self, doc):
         """Return entities as a dict with labels as keys"""

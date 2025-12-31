@@ -1,7 +1,7 @@
 from uuid import UUID
 from decimal import Decimal
 from sqlalchemy.orm import Session
-from models import Account, Transaction
+from .models import Account, Transaction
 
 
 def get_account(db: Session, user_id: UUID):

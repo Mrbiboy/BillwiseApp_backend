@@ -33,7 +33,7 @@ def test_db():
 
 @pytest.fixture(scope="session")
 def client(test_db):
-    from services.bill_service.main import app
+    from services.bill_service.router import app
 
     def override_get_db():
         try:

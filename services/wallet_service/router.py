@@ -1,16 +1,11 @@
 import os
-import sys
-from pathlib import Path
 from uuid import UUID
-
-# Add project root to path to enable imports like `database.database`
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from fastapi import APIRouter, Depends, Request, HTTPException
 from sqlalchemy.orm import Session
 from database.database import get_db
-from service import get_account, add_balance, deduct_balance
-from schemas import TopUpRequest, PaymentRequest
+from .service import get_account, add_balance, deduct_balance
+from .schemas import TopUpRequest, PaymentRequest
 import stripe
 from decimal import Decimal
 import os
@@ -18,8 +13,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 stripe.webhook_key = os.getenv("STRIPE_WEBHOOK_SECRET")
-router = APIRouter(prefix="/wallet", tags=["Wallet"])
+router = APIRouter(prefix="/api/wallet", tags=["Wallet"])
 
 
 @router.get("/")

@@ -8,6 +8,7 @@ from database.database import Base
 class Account(Base):
     """User account to track bills and transactions"""
     __tablename__ = "account"
+    __table_args__ = {'extend_existing': True}
     
     account_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), nullable=False)
@@ -23,6 +24,11 @@ class Account(Base):
 class Transaction(Base):
     """Stores transaction extracted from SMS"""
     __tablename__ = "transaction"
+    __table_args__ = (
+        CheckConstraint("type IN ('debit', 'credit')", name='check_transaction_type'),
+        CheckConstraint("source IN ('sms', 'manual')", name='check_transaction_source'),
+        {'extend_existing': True},
+    )
     
     transaction_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     account_id = Column(UUID(as_uuid=True), ForeignKey('account.account_id', ondelete='CASCADE'), nullable=False)
@@ -32,20 +38,19 @@ class Transaction(Base):
     category = Column(String(100))
     merchant = Column(String(255))
     source = Column(String(50))
-    description = Column(Text)
+    description = Column(String)
     
     # Relationship
     account = relationship("Account", back_populates="transactions")
     bill = relationship("Bill", back_populates="transaction", uselist=False)
-    
-    __table_args__ = (
-        CheckConstraint("type IN ('debit', 'credit')", name='check_transaction_type'),
-        CheckConstraint("source IN ('sms', 'manual')", name='check_transaction_source'),
-    )
 
 class Bill(Base):
     """Stores bills extracted from SMS"""
     __tablename__ = "bill"
+    __table_args__ = (
+        CheckConstraint("status IN ('pending', 'paid')", name='check_bill_status'),
+        {'extend_existing': True},
+    )
     
     bill_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     transaction_id = Column(UUID(as_uuid=True), ForeignKey('transaction.transaction_id', ondelete='SET NULL'), nullable=True)
@@ -59,7 +64,3 @@ class Bill(Base):
     # Relationships
     account = relationship("Account", back_populates="bills")
     transaction = relationship("Transaction", back_populates="bill")
-    
-    __table_args__ = (
-        CheckConstraint("status IN ('pending', 'paid')", name='check_bill_status'),
-    )
