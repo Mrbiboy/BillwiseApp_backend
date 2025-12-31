@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 stripe.webhook_key = os.getenv("STRIPE_WEBHOOK_SECRET")
 router = APIRouter(prefix="/wallet", tags=["Wallet"])
 
