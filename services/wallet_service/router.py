@@ -15,6 +15,7 @@ load_dotenv()
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 stripe.webhook_key = os.getenv("STRIPE_WEBHOOK_SECRET")
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 router = APIRouter(prefix="/api/wallet", tags=["Wallet"])
 
 
@@ -56,8 +57,8 @@ def create_checkout_session(amount: float, user_id: UUID):
             }
         ],
         metadata={"user_id": str(user_id)},
-        success_url="http://localhost:8081/wallet?success=true",
-        cancel_url="http://localhost:8081/wallet?canceled=true",
+        success_url=f"{FRONTEND_URL}/wallet?success=true",
+        cancel_url=f"{FRONTEND_URL}/wallet?canceled=true"
     )
 
     return {"checkout_url": session.url}
